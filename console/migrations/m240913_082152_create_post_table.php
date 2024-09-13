@@ -62,3 +62,5 @@ class m240913_082152_create_post_table extends Migration
         $this->dropTable('{{%post}}');
     }
 }
+
+

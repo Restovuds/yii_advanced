@@ -89,3 +89,4 @@ class Comment extends \yii\db\ActiveRecord
         return new \common\models\query\CommentQuery(get_called_class());
     }
 }
+

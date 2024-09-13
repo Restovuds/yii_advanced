@@ -38,3 +38,4 @@ class m240913_111559_add_access_token_to_user_table extends Migration
     }
     */
 }
+

@@ -92,3 +92,4 @@ class m240913_082226_create_comment_table extends Migration
         $this->dropTable('{{%comment}}');
     }
 }
+
