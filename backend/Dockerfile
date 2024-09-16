@@ -1,4 +1,4 @@
-FROM yiisoftware/yii2-php:8.1-apache
+FROM yiisoftware/yii2-php:7.4-apache
 
 # Change document root for Apache
 RUN sed -i -e 's|/app/web|/app/backend/web|g' /etc/apache2/sites-available/000-default.conf
@@ -6,5 +6,8 @@ RUN sed -i -e 's|/app/web|/app/backend/web|g' /etc/apache2/sites-available/000-d
 RUN a2enmod rewrite
 
 RUN service apache2 restart
+
+
+
 
 
