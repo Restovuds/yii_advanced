@@ -2,6 +2,7 @@ version: '3.2'
 
 services:
 
+
   frontend:
     build: frontend
     ports:
@@ -24,6 +25,13 @@ services:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       # Mount source-code for development frontend-test backend-test sudo gedit /etc/hosts
       - ./:/app
+    networks:
+      - basic-yii-network
+
+  memcached:
+    image: memcached:latest
+    ports:
+      - "11211:11211"
     networks:
       - basic-yii-network
 

@@ -9,7 +9,7 @@ class Post extends \common\models\Post
 {
     public function fields()
     {
-        return ['id', 'body', 'created_at', 'updated_at', 'createdBy'];
+        return ['id', 'title', 'body', 'created_at', 'updated_at', 'createdBy'];
     }
 
     public function extraFields()

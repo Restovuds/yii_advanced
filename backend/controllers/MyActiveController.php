@@ -37,7 +37,7 @@ class MyActiveController extends ActiveController
      */
     public function checkAccess($action, $model = null, $params = [])
     {
-        if (in_array($action, ['create', 'update', 'delete']) && $model->created_by !== Yii::$app->user->id)
+        if (in_array($action, ['update', 'delete']) && $model->created_by !== Yii::$app->user->id)
         {
             throw new ForbiddenHttpException("You do not have permissions to change this record");
         }

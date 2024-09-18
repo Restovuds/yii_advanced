@@ -50,9 +50,10 @@ return [
                     'pattern' => 'posts/<postId:\d+>/comments',
                     'route' => 'comment/index'
                 ],
+
             ],
         ],
-
     ],
+
     'params' => $params,
 ];
