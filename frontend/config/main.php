@@ -12,6 +12,20 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
+        'authClientCollection' => [
+            'class' => 'yii\authclient\Collection',
+            'clients' => [
+                'google' => [
+                    'class'        => 'yii\authclient\clients\Google',
+                    'clientId'     => 'YOUR_GOOGLE_CLIENT_ID',
+                    'clientSecret' => 'YOUR_GOOGLE_CLIENT_SECRET',
+                    'normalizeUserAttributeMap' => [
+                        'name' => 'names.0.displayName',
+                        'email' => 'emailAddresses.0.value',
+                    ],
+                ],
+            ],
+        ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],

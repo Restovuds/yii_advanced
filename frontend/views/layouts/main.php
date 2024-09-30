@@ -78,7 +78,81 @@ AppAsset::register($this);
     </div>
 </footer>
 
+
 <?php $this->endBody() ?>
+
+<script type="module">
+    import { onMessage } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging.js";
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/firebase-messaging-sw.js')
+            .then((registration) => {
+                console.log('Service Worker registered with scope:', registration.scope);
+                // Используем зарегистрированный сервис воркер при получении токена
+                const messaging = getMessaging(app);
+                getToken(messaging, { vapidKey: 'BJPCB7fiBVSE8FthHxVUCS-GzxpMxa3fDfcaZ3n5qv145QgJm78rwqmUDo7mnokvAMYcqepzfuXhGWY3Tmp8k9I', serviceWorkerRegistration: registration })
+                    .then((token) => {
+                        if (token) {
+                            console.log('FCM Token:', token);
+                            // Отправка токена на сервер для сохранения
+                            sendTokenToServer(token);
+                        } else {
+                            console.log('No registration token available. Request permission to generate one.');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('An error occurred while retrieving token.', error);
+                    });
+            })
+            .catch((error) => {
+                console.error('Service Worker registration failed:', error);
+            });
+    }
+
+
+    // Request permission to get the token
+    async function requestPermissionAndGetToken() {
+        try {
+            const token = await getToken(messaging, { vapidKey: '' });
+            if (token) {
+                console.log('FCM Token:', token);
+                // Send token to the server for saving
+                sendTokenToServer(token);
+            } else {
+                console.log('No registration token available. Request permission to generate one.');
+            }
+        } catch (error) {
+            console.error('An error occurred while retrieving token.', error);
+        }
+    }
+
+    function sendTokenToServer(token) {
+        fetch('/site/save-token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': '<?= Yii::$app->request->csrfToken ?>',
+            },
+            body: JSON.stringify({ firebase_token: token }),
+        })
+            .then(response => response.json())
+            .then(data => console.log('Token saved:', data))
+            .catch(error => console.error('Error saving token:', error));
+    }
+
+
+    // Listen to incoming messages
+    onMessage(messaging, (payload) => {
+        console.log('Message received: ', payload);
+        // Customize how you want to display notifications
+    });
+
+    // Request permission and get the token
+    requestPermissionAndGetToken();
+</script>
+
+
+
 </body>
 </html>
 <?php $this->endPage();

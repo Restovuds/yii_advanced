@@ -2,19 +2,21 @@
 
 namespace frontend\controllers;
 
+use common\models\LoginForm;
+use frontend\models\ContactForm;
+use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResendVerificationEmailForm;
+use frontend\models\ResetPasswordForm;
+use frontend\models\SignupForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\ContactForm;
+use yii\authclient\ClientInterfce;
+
 
 /**
  * Site controller
@@ -217,8 +219,8 @@ class SiteController extends Controller
      * Verify email address
      *
      * @param string $token
-     * @throws BadRequestHttpException
      * @return yii\web\Response
+     * @throws BadRequestHttpException
      */
     public function actionVerifyEmail($token)
     {
@@ -256,4 +258,23 @@ class SiteController extends Controller
             'model' => $model
         ]);
     }
+
+    public function actionSaveToken()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $token = Yii::$app->request->post('firebase_token');
+        if ($token && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->identity;
+            $user->firebase_token = $token; // Предположим, что у вас есть поле firebase_token в таблице пользователей
+            if ($user->save()) {
+                return ['success' => true, 'message' => 'Token saved successfully'];
+            } else {
+                return ['success' => false, 'message' => 'Failed to save token'];
+            }
+        }
+
+        return ['success' => false, 'message' => 'Invalid request'];
+    }
+
 }
