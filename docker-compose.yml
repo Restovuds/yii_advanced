@@ -21,7 +21,7 @@ services:
     ports:
       - "21080:80"
       - "8085:8085"
-      - "20443:443"
+      - "21443:443"
     volumes:
       # Re-use local composer cache via host-volume
       - ~/.composer-docker/cache:/root/.composer/cache:delegated

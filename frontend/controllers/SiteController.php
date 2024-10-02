@@ -9,6 +9,7 @@ use frontend\models\ResendVerificationEmailForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\VerifyEmailForm;
+use PHPUnit\Exception;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\filters\AccessControl;
@@ -16,6 +17,7 @@ use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\authclient\ClientInterfce;
+
 
 
 /**
@@ -259,22 +261,6 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionSaveToken()
-    {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
-        $token = Yii::$app->request->post('firebase_token');
-        if ($token && !Yii::$app->user->isGuest) {
-            $user = Yii::$app->user->identity;
-            $user->firebase_token = $token; // Предположим, что у вас есть поле firebase_token в таблице пользователей
-            if ($user->save()) {
-                return ['success' => true, 'message' => 'Token saved successfully'];
-            } else {
-                return ['success' => false, 'message' => 'Failed to save token'];
-            }
-        }
-
-        return ['success' => false, 'message' => 'Invalid request'];
-    }
 
 }

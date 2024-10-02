@@ -20,7 +20,9 @@
         "yiisoft/yii2-symfonymailer": "~2.0.3",
         "consik/yii2-websocket": "^1.0",
       "ext-json": "*",
-        "minishlink/web-push": "^7.0"
+        "minishlink/web-push": "^7.0",
+      "ext-curl": "*",
+        "google/apiclient": "^2.16"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
